@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lake Estes Cabins</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Code+Pro:wght@400;500&family=Nunito+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    /* Colorado mountain palette */
+    --pine:      #1e3a2f;   /* deep evergreen */
+    --pine-mid:  #2d5a42;   /* mid pine */
+    --pine-lite: #3d7a58;   /* lighter pine */
+    --slate:     #2c3e50;   /* mountain shadow blue */
+    --slate-mid: #3d5166;
+    --aspen:     #c8a96e;   /* golden aspen */
+    --aspen-lite:#e8d4a8;
+    --snow:      #f4f1ec;   /* snow/parchment bg */
+    --lodge:     #fdfaf5;   /* warm lodge card */
+    --bark:      #5c3d1e;   /* dark wood */
+    --cliff:     #8a7060;   /* rocky cliff */
+    --mist:      #a09888;   /* mountain mist muted */
+    --border:    #d4cfc6;
+    --border-dk: #b8b0a4;
+    --air-red:   #c0392b;
+    --vrbo-blue: #1a5276;
+    --danger-bg: #fdf2f2;
+    --danger:    #922b21;
+    --warn-bg:   #fef9e7;
+    --warn:      #7d6608;
+    --ok-bg:     #eafaf1;
+    --ok:        #1e6b47;
+    --mono:      'Source Code Pro', monospace;
+    --serif:     'Playfair Display', serif;
+    --sans:      'Nunito Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    font-family: var(--sans);
+    background: var(--snow);
+    color: var(--pine);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--pine);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Mountain silhouette background */
+  #login-screen::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 55%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400' preserveAspectRatio='none'%3E%3Cpolygon points='0,400 0,260 120,140 200,200 320,60 440,180 520,80 640,200 720,100 820,220 920,40 1040,160 1120,100 1200,180 1200,400' fill='%231a3028' opacity='0.9'/%3E%3Cpolygon points='0,400 0,300 80,220 160,280 260,160 360,240 440,140 540,260 620,160 720,280 800,180 900,300 1000,200 1100,280 1200,220 1200,400' fill='%23162a22' opacity='0.8'/%3E%3C/svg%3E") no-repeat bottom center / 100% auto;
+  }
+  /* Stars */
+  #login-screen::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 40%;
+    background-image: radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 8%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 40% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 12%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 5%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 85% 18%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 35%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 62% 30%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 78% 38%, rgba(255,255,255,0.4) 0%, transparent 100%);
+  }
+  .login-box {
+    position: relative;
+    z-index: 10;
+    background: rgba(253,250,245,0.97);
+    border: 1px solid var(--aspen-lite);
+    border-radius: 4px;
+    padding: 2.75rem 2.5rem;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .login-cabin-icon {
+    font-size: 32px;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .login-box h1 {
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.2rem;
+    color: var(--pine);
+  }
+  .login-box p {
+    font-size: 12px;
+    color: var(--mist);
+    margin-bottom: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .login-box input[type=password] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: var(--mono);
+    font-size: 14px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: var(--snow);
+    color: var(--pine);
+    outline: none;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+    transition: border-color .2s;
+  }
+  .login-box input[type=password]:focus { border-color: var(--pine-lite); }
+  .login-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--pine);
+    color: var(--aspen-lite);
+    border: none;
+    border-radius: 3px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .login-btn:hover { background: var(--pine-mid); }
+  .login-error {
+    font-size: 12px;
+    color: var(--air-red);
+    margin-top: 0.75rem;
+    display: none;
+  }
+  .login-error.show { display: block; }
+
+  /* ── APP SHELL ── */
+  #app { display: none; min-height: 100vh; }
+  #app.visible { display: block; }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--pine);
+    color: var(--aspen-lite);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--aspen);
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header-brand-text {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--aspen-lite);
+  }
+  .header-brand-sub {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(232,212,168,0.55);
+    font-weight: 400;
+    margin-top: 1px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .header-sync {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: rgba(232,212,168,0.45);
+  }
+  .logout-btn {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(232,212,168,0.55);
+    background: none;
+    border: 1px solid rgba(200,169,110,0.25);
+    border-radius: 2px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-weight: 600;
+    transition: all .15s;
+  }
+  .logout-btn:hover { color: var(--aspen-lite); border-color: var(--aspen); }
+
+  /* ── NAV ── */
+  nav {
+    border-bottom: 1px solid var(--border);
+    background: var(--lodge);
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+  }
+  .nav-tab {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0.9rem 1.3rem;
+    border: none;
+    background: none;
+    color: var(--mist);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color .15s, border-color .15s;
+    font-family: var(--sans);
+  }
+  .nav-tab:hover { color: var(--pine); }
+  .nav-tab.active { color: var(--pine); border-bottom-color: var(--aspen); }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--air-red);
+    color: white;
+    font-size: 9px;
+    font-weight: 600;
+    border-radius: 9999px;
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+
+  /* ── MAIN ── */
+  main { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── STAT CARDS ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: var(--lodge);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.25rem 1.5rem;
+    border-top: 3px solid var(--pine-lite);
+  }
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .stat-value {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    color: var(--pine);
+    line-height: 1;
+  }
+  .stat-value.danger { color: var(--air-red); }
+  .stat-value.ok     { color: var(--pine-lite); }
+
+  /* ── SECTION CARD ── */
+  .section {
+    background: var(--lodge);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .section-head {
+    padding: 0.9rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--pine);
+  }
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--aspen-lite);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .prop-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1.5px solid rgba(232,212,168,0.4);
+  }
+  .section-body { padding: 0; }
+
+  /* ── BOOKING TABLE ── */
+  .booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .booking-table th {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mist);
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: #f0ede6;
+  }
+  .booking-table td {
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #e8e3da;
+    vertical-align: middle;
+    color: var(--pine);
+  }
+  .booking-table tr:last-child td { border-bottom: none; }
+  .booking-table tr.conflict-row td { background: var(--danger-bg); }
+  .booking-table tr:hover td { background: #f5f1e8; }
+  .booking-table tr.conflict-row:hover td { background: #fce8e8; }
+
+  .plat-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: var(--mono);
+    letter-spacing: 0.04em;
+    padding: 2px 7px;
+    border-radius: 2px;
+  }
+  .plat-tag.air  { background: #fce8e6; color: var(--air-red); }
+  .plat-tag.vrbo { background: #e8f0f8; color: var(--vrbo-blue); }
+  .conflict-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 2px;
+    background: var(--air-red);
+    color: white;
+    margin-left: 6px;
+  }
+  .ok-tag {
+    display: inline-block;
+    font-size: 10px;
+    color: var(--pine-lite);
+    font-family: var(--mono);
+  }
+  .empty-row td {
+    text-align: center;
+    color: var(--mist);
+    font-size: 13px;
+    padding: 2rem;
+    font-style: italic;
+  }
+
+  /* ── CALENDAR ── */
+  .cal-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--pine);
+  }
+  .cal-arrow {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 2px;
+    background: none;
+    cursor: pointer;
+    color: var(--aspen-lite);
+    font-size: 16px;
+    transition: background .15s;
+  }
+  .cal-arrow:hover { background: rgba(200,169,110,0.15); }
+  .cal-month-label {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--aspen-lite);
+  }
+  .cal-legend {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: rgba(232,212,168,0.7);
+  }
+  .cal-grid-wrap { padding: 1rem 1.5rem; background: var(--lodge); }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+  .cal-dow {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mist);
+    text-align: center;
+    padding: 4px 0;
+    font-weight: 600;
+  }
+  .cal-cell {
+    min-height: 64px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 4px 5px;
+    background: var(--lodge);
+    font-size: 11px;
+    transition: background .1s;
+  }
+  .cal-cell:hover { background: #f0ede6; }
+  .cal-cell.empty { background: transparent; border-color: transparent; }
+  .cal-cell.today { border-color: var(--aspen); border-width: 2px; }
+  .cal-day-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--mist);
+    margin-bottom: 3px;
+  }
+  .cal-event {
+    font-size: 9px;
+    padding: 1px 4px;
+    border-radius: 1px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+  }
+  .cal-event.air  { background: #fce8e6; color: var(--air-red); }
+  .cal-event.vrbo { background: #e8f0f8; color: var(--vrbo-blue); }
+  .cal-event.conflict { background: var(--air-red); color: white; }
+
+  /* ── CONFLICTS VIEW ── */
+  .conflict-card {
+    background: var(--danger-bg);
+    border: 1px solid #f1b8b8;
+    border-left: 4px solid var(--air-red);
+    border-radius: 3px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .conflict-card-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--air-red);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .conflict-card-row {
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: var(--pine);
+  }
+  .conflict-card-row span { color: var(--mist); font-size: 12px; }
+  .no-conflict-banner {
+    background: var(--ok-bg);
+    border: 1px solid #a8dab8;
+    border-left: 4px solid var(--pine-lite);
+    border-radius: 3px;
+    padding: 1.25rem 1.5rem;
+    font-size: 14px;
+    color: var(--ok);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ── UPCOMING ── */
+  .upcoming-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e8e3da;
+  }
+  .upcoming-item:last-child { border-bottom: none; }
+  .upcoming-date-block {
+    background: var(--pine);
+    border: 1px solid var(--pine-mid);
+    border-radius: 3px;
+    width: 50px;
+    text-align: center;
+    padding: 6px 4px;
+    flex-shrink: 0;
+  }
+  .upcoming-month { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--aspen); font-weight: 600; }
+  .upcoming-day   { font-family: var(--serif); font-size: 1.5rem; line-height: 1; color: var(--aspen-lite); }
+  .upcoming-info  { flex: 1; }
+  .upcoming-guest { font-size: 14px; font-weight: 600; color: var(--pine); }
+  .upcoming-meta  { font-size: 12px; color: var(--mist); margin-top: 2px; }
+  .upcoming-type  {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 2px; margin-left: 8px;
+  }
+  .upcoming-type.checkin  { background: var(--ok-bg); color: var(--ok); }
+  .upcoming-type.checkout { background: var(--warn-bg); color: var(--warn); }
+
+  /* ── LOAD OVERLAY ── */
+  .load-bar {
+    background: var(--lodge);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--aspen);
+    border-radius: 3px;
+    padding: 1.75rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .load-bar p { font-size: 13px; color: var(--mist); margin-bottom: 1rem; }
+  .load-bar input[type=file] { display: none; }
+  .load-btn {
+    display: inline-block;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 600; font-family: var(--sans);
+    padding: 0.65rem 1.5rem;
+    border: 1px solid var(--border-dk);
+    border-radius: 3px;
+    background: var(--pine);
+    color: var(--aspen-lite);
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .load-btn:hover { background: var(--pine-mid); }
+  .export-btn {
+    font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase;
+    font-weight: 600; font-family: var(--sans);
+    padding: 5px 14px;
+    border: 1px solid var(--border-dk);
+    border-radius: 2px;
+    background: var(--lodge);
+    color: var(--pine);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .export-btn:hover { background: var(--pine); color: var(--aspen-lite); }
+
+  @media (max-width: 700px) {
+    main { padding: 1rem; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 0 1rem; }
+    nav { padding: 0 1rem; overflow-x: auto; }
+    .cal-legend { display: none; }
+    .booking-table th:nth-child(4),
+    .booking-table td:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <span class="login-cabin-icon">🏔</span>
+    <h1>Lake Estes Cabins</h1>
+    <p>Estes Park, Colorado &nbsp;·&nbsp; Booking Dashboard</p>
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')tryLogin()"/>
+    <button class="login-btn" onclick="tryLogin()">Sign in</button>
+    <div class="login-error" id="login-error">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="header-brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 20L9 8L13 14L16 10L21 20H3Z" fill="#c8a96e" opacity="0.9"/>
+        <path d="M1 20H23" stroke="#c8a96e" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+      </svg>
+      <div>
+        <div class="header-brand-text">Lake Estes Cabins</div>
+        <div class="header-brand-sub">Estes Park, Colorado</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="header-sync" id="sync-label"></span>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <nav>
+    <button class="nav-tab active" onclick="switchTab('overview',this)">Overview</button>
+    <button class="nav-tab" onclick="switchTab('calendar',this)">Calendar</button>
+    <button class="nav-tab" onclick="switchTab('bookings',this)">All bookings</button>
+    <button class="nav-tab" onclick="switchTab('conflicts',this)">Conflicts <span class="badge" id="conflict-badge" style="display:none"></span></button>
+    <button class="nav-tab" onclick="switchTab('upcoming',this)">Upcoming</button>
+  </nav>
+
+  <main>
+
+    <!-- OVERVIEW -->
+    <div class="view active" id="view-overview">
+      <div class="stat-row" id="stat-row"></div>
+      <div class="load-bar" id="load-bar">
+        <p>Bookings auto-load from GitHub each morning. If that fails, you can load <code>bookings.json</code> manually from Google Drive.</p>
+        <label class="load-btn">
+          &#9650; Load bookings.json manually
+          <input type="file" accept=".json" onchange="loadJSON(event)"/>
+        </label>
+      </div>
+      <div id="overview-content"></div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="view" id="view-calendar">
+      <div class="section">
+        <div class="cal-nav">
+          <button class="cal-arrow" onclick="changeMonth(-1)">&#8249;</button>
+          <span class="cal-month-label" id="cal-label"></span>
+          <button class="cal-arrow" onclick="changeMonth(1)">&#8250;</button>
+          <div class="cal-legend" id="cal-legend"></div>
+        </div>
+        <div class="cal-grid-wrap">
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL BOOKINGS -->
+    <div class="view" id="view-bookings">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;">
+        <button class="export-btn" onclick="exportCSV()">Export CSV</button>
+      </div>
+      <div id="all-bookings-content"></div>
+    </div>
+
+    <!-- CONFLICTS -->
+    <div class="view" id="view-conflicts">
+      <div id="conflicts-content"></div>
+    </div>
+
+    <!-- UPCOMING -->
+    <div class="view" id="view-upcoming">
+      <div id="upcoming-content"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── PASSWORD (change this!) ──────────────────────
+const PASSWORD = "rentals2026";
+// ────────────────────────────────────────────────
+
+const PROP_COLORS = ['#c8a96e','#3d7a58','#2c5f8a','#b05c2a','#6b4c8a'];
+let state = { properties: [], lastUpdated: null };
+let calMonth = new Date(); calMonth.setDate(1);
+
+// ── AUTH ─────────────────────────────────────────
+function tryLogin() {
+  const val = document.getElementById('pw-input').value;
+  if (val === PASSWORD) {
+    sessionStorage.setItem('rdb_auth','1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    autoLoadFromGitHub();
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+function logout() {
+  sessionStorage.removeItem('rdb_auth');
+  location.reload();
+}
+
+// ── AUTO-LOAD FROM GITHUB ────────────────────────
+const GITHUB_DATA_URL = 'https://raw.githubusercontent.com/kristenrasmus/estes_cabins/main/bookings.json';
+
+async function autoLoadFromGitHub() {
+  setDriveStatus('loading', 'Loading bookings from GitHub...');
+  try {
+    // Cache-bust so we always get the latest version
+    const resp = await fetch(GITHUB_DATA_URL + '?t=' + Date.now());
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    if (data.properties) {
+      state = data;
+      document.getElementById('load-bar').style.display = 'none';
+      const ts = data.lastUpdated
+        ? new Date(data.lastUpdated).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})
+        : 'unknown';
+      document.getElementById('sync-label').textContent = `Last sync: ${ts}`;
+      setDriveStatus('ok', 'Auto-loaded from GitHub', `Last sync: ${ts}`);
+      renderAll();
+    } else {
+      setDriveStatus('idle', 'No bookings found — load manually below');
+    }
+  } catch(e) {
+    // File may not exist yet — fall back to manual load gracefully
+    setDriveStatus('idle', 'Auto-load unavailable — use manual load below');
+    console.warn('GitHub auto-load failed:', e.message);
+  }
+}
+
+if (sessionStorage.getItem('rdb_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  autoLoadFromGitHub();
+}
+
+// ── DATA LOAD ────────────────────────────────────
+function loadJSON(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.properties) {
+        state = data;
+        document.getElementById('load-bar').style.display = 'none';
+        const ts = data.lastUpdated
+          ? new Date(data.lastUpdated).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})
+          : 'unknown';
+        document.getElementById('sync-label').textContent = `Last sync: ${ts}`;
+        renderAll();
+      } else {
+        alert('This does not look like a valid bookings.json file.');
+      }
+    } catch { alert('Could not parse the file. Make sure it is a valid JSON file.'); }
+  };
+  reader.readAsText(file);
+}
+
+// ── HELPERS ──────────────────────────────────────
+function allBookings() {
+  const all = [];
+  state.properties.forEach((p, pi) => {
+    p.bookings.forEach(b => {
+      if (b.checkin && b.checkout) all.push({...b, propName: p.name, propIdx: pi, propId: p.id});
+    });
+  });
+  return all;
+}
+
+function findConflicts() {
+  const all = allBookings();
+  const conflicts = [];
+  for (let i = 0; i < all.length; i++) {
+    for (let j = i+1; j < all.length; j++) {
+      const a = all[i], b = all[j];
+      if (a.propId !== b.propId) continue;
+      const aIn = new Date(a.checkin), aOut = new Date(a.checkout);
+      const bIn = new Date(b.checkin), bOut = new Date(b.checkout);
+      if (aIn < bOut && aOut > bIn) conflicts.push({a, b});
+    }
+  }
+  return conflicts;
+}
+
+function conflictedIds() {
+  return new Set(findConflicts().flatMap(c => [c.a.id, c.b.id]));
+}
+
+function fmtDate(iso) {
+  return new Date(iso + 'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function fmtShort(iso) {
+  return new Date(iso + 'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+function platLabel(p) { return p === 'air' ? 'Airbnb' : 'VRBO'; }
+
+// ── RENDER ALL ───────────────────────────────────
+function renderAll() {
+  renderStats();
+  renderOverview();
+  renderCalendar();
+  renderAllBookings();
+  renderConflicts();
+  renderUpcoming();
+  const cc = findConflicts().length;
+  const badge = document.getElementById('conflict-badge');
+  if (cc > 0) { badge.textContent = cc; badge.style.display = 'inline-flex'; }
+  else badge.style.display = 'none';
+}
+
+// ── STATS ─────────────────────────────────────────
+function renderStats() {
+  const all = allBookings();
+  const conflicts = findConflicts();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const in30 = new Date(today); in30.setDate(in30.getDate()+30);
+  const upcoming = all.filter(b => { const d = new Date(b.checkin+'T00:00:00'); return d >= today && d <= in30; }).length;
+  const cids = conflictedIds();
+  document.getElementById('stat-row').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Properties</div><div class="stat-value">${state.properties.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Total bookings</div><div class="stat-value">${all.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Conflicts</div><div class="stat-value ${conflicts.length>0?'danger':'ok'}">${conflicts.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Arriving in 30 days</div><div class="stat-value">${upcoming}</div></div>
+  `;
+}
+
+// ── OVERVIEW ──────────────────────────────────────
+function renderOverview() {
+  if (!state.properties.length) { document.getElementById('overview-content').innerHTML=''; return; }
+  const cids = conflictedIds();
+  const today = new Date(); today.setHours(0,0,0,0);
+  let html = '';
+  state.properties.forEach((p, pi) => {
+    const color = PROP_COLORS[pi % PROP_COLORS.length];
+    const active = p.bookings.filter(b => {
+      if (!b.checkin||!b.checkout) return false;
+      const cin = new Date(b.checkin+'T00:00:00'), cout = new Date(b.checkout+'T00:00:00');
+      return today >= cin && today < cout;
+    });
+    const upcoming = p.bookings.filter(b => {
+      if (!b.checkin) return false;
+      const cin = new Date(b.checkin+'T00:00:00');
+      return cin > today;
+    }).sort((a,b) => a.checkin.localeCompare(b.checkin)).slice(0,3);
+    html += `<div class="section" style="margin-bottom:1.5rem;">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="prop-dot" style="background:${color}"></span>
+          ${p.name}
+        </div>
+        <span style="font-size:11px;color:rgba(232,212,168,0.6);font-family:var(--mono);">${p.bookings.length} bookings</span>
+      </div>
+      <div class="section-body">
+        <table class="booking-table">
+          <thead><tr><th>Platform</th><th>Guest</th><th>Check-in</th><th>Check-out</th><th>Status</th></tr></thead>
+          <tbody>`;
+    const toShow = upcoming.length ? upcoming : active;
+    if (!toShow.length) {
+      html += `<tr class="empty-row"><td colspan="5">No upcoming bookings</td></tr>`;
+    } else {
+      toShow.forEach(b => {
+        const isConflict = cids.has(b.id);
+        html += `<tr class="${isConflict?'conflict-row':''}">
+          <td><span class="plat-tag ${b.platform}">${platLabel(b.platform)}</span></td>
+          <td>${b.guest || '<span style="color:var(--muted);font-style:italic">—</span>'}</td>
+          <td style="font-family:var(--mono);font-size:12px;">${fmtShort(b.checkin)}</td>
+          <td style="font-family:var(--mono);font-size:12px;">${fmtShort(b.checkout)}</td>
+          <td>${isConflict ? '<span class="conflict-tag">Conflict</span>' : '<span class="ok-tag">✓ clear</span>'}</td>
+        </tr>`;
+      });
+    }
+    html += `</tbody></table></div></div>`;
+  });
+  document.getElementById('overview-content').innerHTML = html;
+}
+
+// ── ALL BOOKINGS ──────────────────────────────────
+function renderAllBookings() {
+  const cids = conflictedIds();
+  let html = '';
+  state.properties.forEach((p, pi) => {
+    const color = PROP_COLORS[pi % PROP_COLORS.length];
+    html += `<div class="section">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="prop-dot" style="background:${color}"></span>${p.name}
+        </div>
+      </div>
+      <div class="section-body">
+        <table class="booking-table">
+          <thead><tr><th>Platform</th><th>Guest</th><th>Check-in</th><th>Check-out</th><th>Status</th></tr></thead>
+          <tbody>`;
+    if (!p.bookings.length) {
+      html += `<tr class="empty-row"><td colspan="5">No bookings yet</td></tr>`;
+    } else {
+      const sorted = [...p.bookings].sort((a,b) => (a.checkin||'').localeCompare(b.checkin||''));
+      sorted.forEach(b => {
+        if (!b.checkin||!b.checkout) return;
+        const isConflict = cids.has(b.id);
+        html += `<tr class="${isConflict?'conflict-row':''}">
+          <td><span class="plat-tag ${b.platform}">${platLabel(b.platform)}</span></td>
+          <td>${b.guest || '<span style="color:var(--muted);font-style:italic">—</span>'}</td>
+          <td style="font-family:var(--mono);font-size:12px;">${fmtDate(b.checkin)}</td>
+          <td style="font-family:var(--mono);font-size:12px;">${fmtDate(b.checkout)}</td>
+          <td>${isConflict ? '<span class="conflict-tag">Conflict</span>' : '<span class="ok-tag">✓ clear</span>'}</td>
+        </tr>`;
+      });
+    }
+    html += `</tbody></table></div></div>`;
+  });
+  document.getElementById('all-bookings-content').innerHTML = html || '<div class="load-bar"><p>No data loaded yet.</p></div>';
+}
+
+// ── CONFLICTS ─────────────────────────────────────
+function renderConflicts() {
+  const conflicts = findConflicts();
+  const el = document.getElementById('conflicts-content');
+  if (!conflicts.length) {
+    el.innerHTML = `<div class="no-conflict-banner">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1e6b47" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1e6b47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      No double-booking conflicts detected across all properties.
+    </div>`;
+    return;
+  }
+  el.innerHTML = conflicts.map((c, i) => `
+    <div class="conflict-card">
+      <div class="conflict-card-title">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2Z" stroke="var(--air)" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 7v3M8 11.5v.5" stroke="var(--air)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Conflict ${i+1} — ${c.a.propName}
+      </div>
+      <div class="conflict-card-row">
+        <span class="plat-tag ${c.a.platform}" style="margin-right:8px;">${platLabel(c.a.platform)}</span>
+        ${c.a.guest || 'Unknown guest'} &nbsp;·&nbsp;
+        <span style="font-family:var(--mono);font-size:12px;">${fmtDate(c.a.checkin)} → ${fmtDate(c.a.checkout)}</span>
+      </div>
+      <div class="conflict-card-row" style="margin-top:6px;">
+        <span class="plat-tag ${c.b.platform}" style="margin-right:8px;">${platLabel(c.b.platform)}</span>
+        ${c.b.guest || 'Unknown guest'} &nbsp;·&nbsp;
+        <span style="font-family:var(--mono);font-size:12px;">${fmtDate(c.b.checkin)} → ${fmtDate(c.b.checkout)}</span>
+      </div>
+    </div>`
+  ).join('');
+}
+
+// ── UPCOMING ──────────────────────────────────────
+function renderUpcoming() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate()+1);
+  const in14 = new Date(today); in14.setDate(in14.getDate()+14);
+  const cids = conflictedIds();
+
+  const events = [];
+  allBookings().forEach(b => {
+    const cin  = new Date(b.checkin+'T00:00:00');
+    const cout = new Date(b.checkout+'T00:00:00');
+    if (cin >= today && cin <= in14) events.push({type:'checkin',  date:cin,  booking:b});
+    if (cout > today && cout <= in14) events.push({type:'checkout', date:cout, booking:b});
+  });
+  events.sort((a,b) => a.date - b.date);
+
+  const el = document.getElementById('upcoming-content');
+  if (!events.length) {
+    el.innerHTML = `<div class="section"><div class="section-body" style="padding:2rem;text-align:center;color:var(--muted);font-style:italic;font-size:13px;">No arrivals or departures in the next 14 days.</div></div>`;
+    return;
+  }
+
+  const isTomorrow = d => d.toDateString() === tomorrow.toDateString();
+  const isToday2   = d => d.toDateString() === today.toDateString();
+
+  let html = `<div class="section"><div class="section-body">`;
+  events.forEach(e => {
+    const d = e.date;
+    const month = d.toLocaleDateString('en-US',{month:'short'}).toUpperCase();
+    const day   = d.getDate();
+    const isConflict = cids.has(e.booking.id);
+    const label = isToday2(d) ? 'Today' : isTomorrow(d) ? 'Tomorrow' : d.toLocaleDateString('en-US',{weekday:'short'});
+    html += `<div class="upcoming-item">
+      <div class="upcoming-date-block">
+        <div class="upcoming-month">${month}</div>
+        <div class="upcoming-day">${day}</div>
+      </div>
+      <div class="upcoming-info">
+        <div class="upcoming-guest">
+          ${e.booking.guest || 'Guest'}
+          <span class="upcoming-type ${e.type}">${e.type === 'checkin' ? 'Check-in' : 'Check-out'}</span>
+          ${isConflict ? '<span class="conflict-tag" style="font-size:9px;">Conflict</span>' : ''}
+        </div>
+        <div class="upcoming-meta">
+          ${e.booking.propName} &nbsp;·&nbsp;
+          <span class="plat-tag ${e.booking.platform}" style="font-size:9px;padding:1px 5px;">${platLabel(e.booking.platform)}</span>
+          &nbsp;·&nbsp; ${label}
+          &nbsp;·&nbsp; ${fmtDate(e.booking.checkin)} → ${fmtDate(e.booking.checkout)}
+        </div>
+      </div>
+    </div>`;
+  });
+  html += `</div></div>`;
+  el.innerHTML = html;
+}
+
+// ── CALENDAR ──────────────────────────────────────
+function changeMonth(dir) {
+  calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + dir, 1);
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const label  = document.getElementById('cal-label');
+  const grid   = document.getElementById('cal-grid');
+  const legend = document.getElementById('cal-legend');
+  if (!label) return;
+
+  label.textContent = calMonth.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+  legend.innerHTML  = state.properties.map((p, pi) =>
+    `<div class="legend-item"><span class="prop-dot" style="background:${PROP_COLORS[pi%PROP_COLORS.length]}"></span>${p.name}</div>`
+  ).join('');
+
+  const cids  = conflictedIds();
+  const year  = calMonth.getFullYear();
+  const month = calMonth.getMonth();
+  const first = new Date(year, month, 1).getDay();
+  const days  = new Date(year, month+1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  let html = ['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => `<div class="cal-dow">${d}</div>`).join('');
+  for (let i = 0; i < first; i++) html += `<div class="cal-cell empty"></div>`;
+
+  for (let d = 1; d <= days; d++) {
+    const date = new Date(year, month, d);
+    const isToday = date.getTime() === today.getTime();
+    const evts = [];
+    allBookings().forEach(b => {
+      const cin  = new Date(b.checkin+'T00:00:00');
+      const cout = new Date(b.checkout+'T00:00:00');
+      if (date >= cin && date < cout) evts.push(b);
+    });
+    let evtHtml = evts.slice(0,3).map(b => {
+      const cls = cids.has(b.id) ? 'conflict' : b.platform;
+      return `<div class="cal-event ${cls}">${b.platform==='air'?'A':'V'} ${b.guest||'booked'}</div>`;
+    }).join('');
+    if (evts.length > 3) evtHtml += `<div style="font-size:8px;color:var(--muted);">+${evts.length-3}</div>`;
+    html += `<div class="cal-cell${isToday?' today':''}"><div class="cal-day-num">${d}</div>${evtHtml}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+// ── EXPORT ────────────────────────────────────────
+function exportCSV() {
+  const cids = conflictedIds();
+  const rows = [['Property','Platform','Check-in','Check-out','Guest','Status']];
+  allBookings().forEach(b => {
+    rows.push([b.propName, platLabel(b.platform), b.checkin, b.checkout, b.guest||'', cids.has(b.id)?'CONFLICT':'OK']);
+  });
+  const csv = rows.map(r => r.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const url = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  const a = document.createElement('a'); a.href=url; a.download='rental-bookings.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── TAB SWITCHING ─────────────────────────────────
+function switchTab(name, el) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('view-'+name).classList.add('active');
+  if (name === 'calendar') renderCalendar();
+}
+
+// Initial render if already logged in
+
+</script>
+</body>
+</html>
